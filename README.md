@@ -2,6 +2,8 @@
 
 A tiny, rustup-like version manager for [IOTA](https://github.com/iotaledger/iota). Download, switch between, and manage multiple IOTA releases (including release candidates) without touching your shell config.
 
+> **Note:** iotaup is aimed at developers who need to jump between IOTA toolchain versions locally or in CI. It is **not** intended for validator operators or other production node deployments, where you should follow the official installation and upgrade guidance instead.
+
 ## Setup
 
 ```sh
