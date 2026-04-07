@@ -61,6 +61,7 @@ Example GitHub Actions step that installs a pinned IOTA release and puts it on `
 ```yaml
 - name: Install IOTA
   run: |
+    # Pin to a specific commit (--rev <sha>) or tag (--tag vX.Y.Z) for reproducible, auditable CI builds.
     cargo install --git https://github.com/marc2332/iotaup
     iotaup install 1.19.1
     echo "$HOME/.iotaup/bin" >> "$GITHUB_PATH"
