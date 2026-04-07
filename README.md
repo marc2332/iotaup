@@ -2,32 +2,14 @@
 
 A tiny, rustup-like version manager for [IOTA](https://github.com/iotaledger/iota). Download, switch between, and manage multiple IOTA releases (including release candidates) without touching your shell config.
 
-## Install the tool
+## Setup
 
 ```sh
 cargo install --git https://github.com/marc2332/iotaup
+export PATH="$HOME/.iotaup/bin:$PATH"
 ```
 
-This drops the `iotaup` binary into `~/.cargo/bin` (which should already be on your `PATH` if you use Rust).
-
-## Configure your PATH (one-time)
-
-iotaup keeps everything under `~/.iotaup` (override with `IOTAUP_HOME`). Activated IOTA binaries are exposed as stable symlinks in `~/.iotaup/bin`. Add that directory to your `PATH` once and you never need to touch your shell config again when switching versions.
-
-```sh
-# bash / zsh
-echo 'export PATH="$HOME/.iotaup/bin:$PATH"' >> ~/.bashrc
-
-# fish
-fish_add_path "$HOME/.iotaup/bin"
-```
-
-You can ask iotaup where that directory is:
-
-```sh
-iotaup self path
-# /home/you/.iotaup/bin
-```
+Add that `export` line to your shell config (`~/.bashrc`, `~/.zshrc`, etc.) so it persists across sessions. Everything lives under `~/.iotaup` (override with `IOTAUP_HOME`). Run `iotaup self path` to print the bin directory.
 
 ## Install and activate a release
 
@@ -69,6 +51,23 @@ Remove a version (use `-f` / `--force` to remove the active one):
 ```sh
 iotaup uninstall 1.19.1
 ```
+
+## CI usage
+
+Example GitHub Actions step that installs a pinned IOTA release and puts it on `PATH` for the rest of the job:
+
+```yaml
+- name: Install IOTA
+  run: |
+    cargo install --git https://github.com/marc2332/iotaup
+    iotaup install 1.19.1
+    echo "$HOME/.iotaup/bin" >> "$GITHUB_PATH"
+
+- name: Use it
+  run: iota --version
+```
+
+The version string can be any tag from `iotaledger/iota`, including release candidates (`1.20.0-rc.1`). Pin it explicitly so CI is reproducible.
 
 ## How it works
 
